@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { createProduct } = require('../controllers/productController');
+const { createProduct, getProducts } = require('../controllers/productController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
 // Protect and authorize guard this route completely!
-router.post('/', protect, authorize('seller', 'admin'), createProduct);
+router.route('/')
+.get(getProducts) // Public route to get all products
+.post(protect, authorize('seller', 'admin'), createProduct); // Protected route for creating products   
 
 module.exports = router;

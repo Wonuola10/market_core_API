@@ -21,6 +21,26 @@ const createProduct = async (req, res) => {
     }
 };
 
+//@desc    Get all products
+//@route   GET /api/v1/products
+//@access  Public
+const getProducts = async (req, res) => {
+    try {
+        const products = await Product.find().populate('seller', 'name email'); // Populate seller details
+        
+        res.status(200).json({
+            status: 'success',
+            message: 'Products fetched successfully',
+            count: products.length,
+            data: products,
+        });
+    } catch (error) {
+        console.error(`Error fetching products: ${error.message}`);
+        res.status(500).json({ status: 'error', message: 'Server error while fetching products' });
+    }
+};
+
 module.exports = {
     createProduct,
+    getProducts,
 };
